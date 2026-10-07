@@ -1,0 +1,38 @@
+{
+  "url": "http://127.0.0.1:8081/",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "Adham Hoshimov — Full-stack dasturchi",
+      "hasCanvas": false,
+      "bodyTextLen": 2486,
+      "bodyTextHash": "41aed0af8ed7702b7968596d67b3439895bfa62519f5b0f5b2c3024b886effbd",
+      "bodyTextPrefix": "Asosiy bo'limga o'tish Adham Hoshimov Haqimda Ko'nikmalar Xizmat",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-built.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "Adham Hoshimov — Full-stack dasturchi",
+      "hasCanvas": false,
+      "bodyTextLen": 2489,
+      "bodyTextHash": "22415803995e1fb6450634567529ee7e78a76156dcc3690ea8728f7c2a9cc14d",
+      "bodyTextPrefix": "Asosiy bo'limga o'tish Adham Hoshimov AH Haqimda Ko'nikmalar Xiz",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-built-mobile.png"
+    }
+  },
+  "brandWarnings": [],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/app-builder-built.json",
+  "divergesFromBaseline": false,
+  "baselineReasons": []
+}
