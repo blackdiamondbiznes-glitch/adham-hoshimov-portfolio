@@ -8,3 +8,6 @@ dist/
 *.log
 attachments/
 artifacts/
+
+.vercel
+.env*
