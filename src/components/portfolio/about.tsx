@@ -23,10 +23,10 @@ export function About() {
               <Portrait photo={photo} alt={copy.profileAlt} initials={copy.initials} />
               <div className="min-w-0">
                 <h2 className="about-title">{copy.aboutTitle}</h2>
-                <p className="mt-3 text-sm text-[#aaa]">
+                <p className="muted mt-3 text-sm">
                   {copy.age} {copy.ageLabel}
                 </p>
-                <p className="mt-4 text-base leading-relaxed text-[#d4d4d4] md:text-[17px]">
+                <p className="soft mt-4 text-base leading-relaxed md:text-[17px]">
                   {copy.aboutLead}
                 </p>
               </div>
@@ -34,9 +34,9 @@ export function About() {
           </motion.article>
 
           <motion.article className="about-card about-card-accent md:col-span-2" {...reveal(reduce, 0.08)}>
-            <Sparkles className="size-5 text-[#4F2BFF]" aria-hidden="true" />
-            <h3 className="mt-4 text-lg font-semibold tracking-tight text-white">{copy.summaryLabel}</h3>
-            <p className="mt-3 text-base leading-relaxed text-[#d4d4d4]">{copy.aboutClose}</p>
+            <Sparkles className="accent-icon size-5" aria-hidden="true" />
+            <h3 className="fg mt-4 text-lg font-semibold tracking-tight">{copy.summaryLabel}</h3>
+            <p className="soft mt-3 text-base leading-relaxed">{copy.aboutClose}</p>
           </motion.article>
 
           {copy.aboutPoints.map((point, index) => {
@@ -47,11 +47,11 @@ export function About() {
                 className="about-card md:col-span-2"
                 {...reveal(reduce, 0.12 + index * 0.06)}
               >
-                <span className="grid size-10 place-items-center rounded-2xl border border-white/10 bg-[#4F2BFF]/15">
-                  <Icon className="size-5 text-[#c4b5ff]" aria-hidden="true" />
+                <span className="icon-well grid size-10 place-items-center rounded-2xl">
+                  <Icon className="size-5" aria-hidden="true" />
                 </span>
-                <h3 className="mt-4 text-lg font-semibold tracking-tight text-white">{point.title}</h3>
-                <p className="mt-2 text-base leading-relaxed text-[#c6c6c6]">{point.detail}</p>
+                <h3 className="fg mt-4 text-lg font-semibold tracking-tight">{point.title}</h3>
+                <p className="soft mt-2 text-base leading-relaxed">{point.detail}</p>
               </motion.article>
             );
           })}
@@ -71,14 +71,14 @@ function Portrait({ photo, alt, initials }: { photo: string | null; alt: string;
         height={160}
         loading="lazy"
         decoding="async"
-        className="size-28 shrink-0 rounded-3xl object-cover ring-1 ring-white/15 sm:size-36"
+        className="size-28 shrink-0 rounded-3xl object-cover ring-1 ring-[color:var(--pf-line-strong)] sm:size-36"
       />
     );
   }
 
   return (
     <div
-      className="grid size-28 shrink-0 place-items-center rounded-3xl bg-[#4F2BFF] text-3xl font-semibold text-white sm:size-36"
+      className="accent-fill grid size-28 shrink-0 place-items-center rounded-3xl text-3xl font-semibold sm:size-36"
       aria-hidden="true"
     >
       {initials}

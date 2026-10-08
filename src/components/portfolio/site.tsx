@@ -13,6 +13,7 @@ import {
   LifeBuoy,
   Menu,
   Monitor,
+  Moon,
   MousePointer2,
   PanelsTopLeft,
   Phone,
@@ -22,6 +23,7 @@ import {
   Server,
   Smartphone,
   Sparkles,
+  Sun,
   Terminal,
   Triangle,
   Webhook,
@@ -31,6 +33,7 @@ import {
 } from "lucide-react";
 import { shownValue, type ProjectView } from "@/config/portfolio";
 import { LocaleProvider, useContent } from "@/lib/locale";
+import { ThemeProvider, useTheme } from "@/lib/theme";
 import { About } from "@/components/portfolio/about";
 import { driveImageUrl, youtubeEmbed, youtubeId } from "@/lib/media";
 import { cn } from "@/lib/utils";
@@ -108,7 +111,9 @@ function desktopMotion() {
 export function Site() {
   return (
     <LocaleProvider>
-      <SiteBody />
+      <ThemeProvider>
+        <SiteBody />
+      </ThemeProvider>
     </LocaleProvider>
   );
 }
@@ -135,11 +140,11 @@ function SiteBody() {
   }, [copy.nav]);
 
   return (
-    <div id="top" className="min-h-screen bg-black text-white">
+    <div id="top" className="page min-h-screen">
       <CursorGlow />
       <a
         href="#haqimda"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:bg-white focus:px-4 focus:py-3 focus:text-black"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:bg-[#4f2bff] focus:px-4 focus:py-3 focus:text-white"
       >
         {copy.skip}
       </a>
@@ -175,7 +180,7 @@ function Header({ active }: { active: string }) {
 
   return (
     <header className="fixed inset-x-0 top-3 z-50 px-3 md:top-5 md:px-6">
-      <div className="mx-auto flex max-w-5xl items-center gap-3 rounded-full border border-white/10 bg-black/55 px-3 py-2 shadow-[0_10px_40px_rgba(0,0,0,0.35)] backdrop-blur-xl">
+      <div className="header-shell mx-auto flex max-w-5xl items-center gap-3 rounded-full px-3 py-2">
         <a
           href="#top"
           aria-label={copy.name}
@@ -194,8 +199,8 @@ function Header({ active }: { active: string }) {
               href={`#${item.id}`}
               aria-current={active === item.id ? "true" : undefined}
               className={cn(
-                "inline-flex min-h-11 items-center px-3 text-sm text-[#888]",
-                active === item.id && "text-white",
+                "muted inline-flex min-h-11 items-center px-3 text-sm",
+                active === item.id && "fg",
               )}
               onClick={(event) => {
                 event.preventDefault();
@@ -208,6 +213,8 @@ function Header({ active }: { active: string }) {
         </nav>
         <div className="ml-auto flex items-center gap-1">
           <LangSwitch locale={locale} label={copy.langLabel} onChange={setLocale} />
+          <span className="theme-split" aria-hidden="true" />
+          <ThemeSwitch />
           <a
             href={copy.telegram.href}
             {...externalProps(copy.telegram.href)}
@@ -231,13 +238,13 @@ function Header({ active }: { active: string }) {
         <nav
           id={menuId}
           aria-label={copy.mobileMenu}
-          className="mx-auto mt-2 max-w-5xl rounded-3xl border border-white/10 bg-black/80 p-3 backdrop-blur-xl md:hidden"
+          className="menu-panel mx-auto mt-2 max-w-5xl rounded-3xl p-3 md:hidden"
         >
           {copy.nav.map((item) => (
             <a
               key={item.id}
               href={`#${item.id}`}
-              className="flex min-h-12 items-center px-3 text-base text-[#888]"
+              className="muted flex min-h-12 items-center px-3 text-base"
               onClick={(event) => {
                 event.preventDefault();
                 go(item.id);
@@ -272,13 +279,13 @@ function LangSwitch({
     <div className="flex items-center text-sm font-semibold" role="group" aria-label={label}>
       {(["uz", "ru"] as const).map((code, index) => (
         <span key={code} className="inline-flex items-center">
-          {index > 0 ? <span className="text-[#555]">/</span> : null}
+          {index > 0 ? <span className="faint">/</span> : null}
           <button
             type="button"
             aria-pressed={locale === code}
             className={cn(
               "inline-flex min-h-11 items-center px-1.5 tracking-wide",
-              locale === code ? "text-white" : "text-[#888]",
+              locale === code ? "fg" : "muted",
             )}
             onClick={() => onChange(code)}
           >
@@ -287,6 +294,27 @@ function LangSwitch({
         </span>
       ))}
     </div>
+  );
+}
+
+function ThemeSwitch() {
+  const { copy } = useContent();
+  const { theme, setTheme } = useTheme();
+  const light = theme === "light";
+  const label = light ? copy.themeToDark : copy.themeToLight;
+  const Icon = light ? Moon : Sun;
+
+  return (
+    <button
+      type="button"
+      className="inline-flex size-11 items-center justify-center rounded-full"
+      aria-pressed={light}
+      aria-label={label}
+      title={label}
+      onClick={() => setTheme(light ? "dark" : "light")}
+    >
+      <Icon className="size-5" aria-hidden="true" />
+    </button>
   );
 }
 
@@ -300,7 +328,7 @@ function Hero() {
         <p className="kicker">{copy.role}</p>
         <h1 className="mt-4">
           <span className="sr-only">{copy.name}</span>
-          <span aria-hidden="true" className="block text-sm font-semibold tracking-[0.42em] text-[#888]">
+          <span aria-hidden="true" className="block text-sm font-semibold tracking-[0.42em] muted">
             ADHAM
           </span>
           <span aria-hidden="true" className="hero-outline">
@@ -308,7 +336,7 @@ function Hero() {
           </span>
         </h1>
         <div className="hero-glass mt-6 max-w-xl">
-          <p className="text-base leading-relaxed text-[#d4d4d4] md:text-lg">{copy.slogan}</p>
+          <p className="text-base leading-relaxed soft md:text-lg">{copy.slogan}</p>
           <div className="mt-6 flex flex-col gap-3 sm:flex-row">
           <button
             type="button"
@@ -320,7 +348,7 @@ function Hero() {
           <a
             href={copy.telegram.href}
             {...externalProps(copy.telegram.href)}
-            className="btn inline-flex min-h-12 items-center justify-center rounded-full border border-white/15 px-5 text-base font-semibold"
+            className="btn inline-flex min-h-12 items-center justify-center rounded-full ghost px-5 text-base font-semibold"
           >
             {copy.telegram.label}
           </a>
@@ -486,7 +514,7 @@ function TechMarquee() {
   const rowA = items.filter((_, index) => index % 2 === 0);
   const rowB = items.filter((_, index) => index % 2 === 1);
   return (
-    <section aria-label={copy.techLabel} className="border-y border-white/8 py-6">
+    <section aria-label={copy.techLabel} className="border-y line py-6">
       <MarqueeRow items={rowA} />
       <MarqueeRow items={rowB.length ? rowB : rowA} reverse />
     </section>
@@ -501,8 +529,8 @@ function MarqueeRow({ items, reverse = false }: { items: string[]; reverse?: boo
         {loop.map((item, index) => {
           const Icon = techIcons[item] ?? Sparkles;
           return (
-            <span key={`${item}-${index}`} className="inline-flex items-center gap-2 text-sm font-medium text-[#cfcfcf]">
-              <Icon className="size-4 text-[#888]" aria-hidden="true" />
+            <span key={`${item}-${index}`} className="inline-flex items-center gap-2 text-sm font-medium soft">
+              <Icon className="size-4 muted" aria-hidden="true" />
               {item}
             </span>
           );
@@ -565,8 +593,8 @@ function SkillCard({ title, items }: { title: string; items: readonly string[] }
         {items.map((item) => {
           const Icon = techIcons[item] ?? Sparkles;
           return (
-            <li key={item} className="flex items-center gap-2.5 text-base text-white">
-              <Icon className="size-4 shrink-0 text-[#4F2BFF]" aria-hidden="true" />
+            <li key={item} className="flex items-center gap-2.5 fg text-base">
+              <Icon className="size-4 shrink-0 accent-icon" aria-hidden="true" />
               {item}
             </li>
           );
@@ -593,10 +621,10 @@ function Services() {
               <li key={service.title}>
                 <Fade delay={index * 0.05}>
                   <article className="glass h-full p-5 transition-colors duration-300">
-                    <Icon className="size-5 text-[#4F2BFF]" aria-hidden="true" />
+                    <Icon className="size-5 accent-icon" aria-hidden="true" />
                     <h3 className="mt-4 text-lg font-semibold tracking-tight">{service.title}</h3>
-                    <p className="mt-1 text-base text-[#888]">{service.detail}</p>
-                    <p className="mt-3 text-sm text-[#d4d4d4]">
+                    <p className="mt-1 text-base muted">{service.detail}</p>
+                    <p className="mt-3 text-sm soft">
                       {price ? copy.formatPrice(price) : copy.priceAsk}
                     </p>
                   </article>
@@ -612,9 +640,9 @@ function Services() {
         <ol className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {copy.steps.map((step, index) => (
             <li key={step.title} className="glass p-5">
-              <span className="text-sm font-semibold text-[#4F2BFF]">0{index + 1}</span>
+              <span className="text-sm font-semibold accent-icon">0{index + 1}</span>
               <h3 className="mt-3 text-lg font-semibold tracking-tight">{step.title}</h3>
-              <p className="mt-2 text-base text-[#888]">{step.detail}</p>
+              <p className="mt-2 text-base muted">{step.detail}</p>
             </li>
           ))}
         </ol>
@@ -664,8 +692,8 @@ function ProjectCard({ project }: { project: ProjectView }) {
       <ProjectMedia project={project} video={video} playing={playing} />
         <div className="relative z-[3] flex flex-1 flex-col p-5 md:p-6">
         <h3 className="text-2xl font-semibold tracking-tight">{project.title}</h3>
-        <p className="mt-3 text-base leading-relaxed text-[#888]">{project.summary}</p>
-        <p className="mt-3 text-base leading-relaxed text-[#d4d4d4]">
+        <p className="mt-3 text-base leading-relaxed muted">{project.summary}</p>
+        <p className="mt-3 text-base leading-relaxed soft">
           {copy.resultLabel}: {project.result}
           {shownValue(project.metric) ? ` — ${shownValue(project.metric)}` : ""}
         </p>
@@ -673,7 +701,7 @@ function ProjectCard({ project }: { project: ProjectView }) {
         {project.tags.length > 0 ? (
           <ul className="mt-4 flex flex-wrap gap-2">
             {project.tags.map((tag) => (
-              <li key={tag} className="rounded-full border border-white/10 px-2.5 py-1 text-sm text-[#888]">
+              <li key={tag} className="rounded-full tag px-2.5 py-1 text-sm muted">
                 {tag}
               </li>
             ))}
@@ -691,7 +719,7 @@ function ProjectCard({ project }: { project: ProjectView }) {
                   "btn inline-flex min-h-11 items-center gap-1.5 rounded-full px-4 text-sm font-medium",
                   link.href.startsWith("/")
                     ? "accent-fill"
-                    : "border border-white/15",
+                    : "ghost",
                 )}
               >
                 {link.label}
@@ -702,7 +730,7 @@ function ProjectCard({ project }: { project: ProjectView }) {
           {video ? (
             <button
               type="button"
-              className="btn inline-flex min-h-11 items-center gap-1.5 rounded-full border border-white/15 px-4 text-sm font-medium"
+              className="btn inline-flex min-h-11 items-center gap-1.5 rounded-full ghost px-4 text-sm font-medium"
               onClick={() => setPlaying(true)}
             >
               <Play className="size-4" aria-hidden="true" />
@@ -710,7 +738,7 @@ function ProjectCard({ project }: { project: ProjectView }) {
             </button>
           ) : null}
           {project.links.length === 0 && !video ? (
-            <span className="inline-flex min-h-11 items-center rounded-full border border-white/10 px-4 text-sm text-[#888]">
+            <span className="inline-flex min-h-11 items-center rounded-full tag px-4 text-sm muted">
               {copy.closedLabel}
             </span>
           ) : null}
@@ -817,7 +845,7 @@ function Contact() {
       <Fade className="mx-auto max-w-6xl px-5 py-24 md:py-32">
         <p className="kicker">{copy.contactKicker}</p>
         <h2 className="section-title mt-4 max-w-4xl">{copy.contactTitle}</h2>
-        <p className="mt-4 max-w-2xl text-base leading-relaxed text-[#d4d4d4] md:text-lg">{copy.contactText}</p>
+        <p className="mt-4 max-w-2xl text-base leading-relaxed soft md:text-lg">{copy.contactText}</p>
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
           <Magnetic href={copy.telegram.href} className="accent-fill">
             <Send className="size-5" aria-hidden="true" />
@@ -825,7 +853,7 @@ function Contact() {
           </Magnetic>
           <a
             href={copy.phone.href}
-            className="btn inline-flex min-h-16 items-center justify-center gap-3 rounded-full border border-white/15 px-8 text-lg font-semibold"
+            className="btn inline-flex min-h-16 items-center justify-center gap-3 rounded-full ghost px-8 text-lg font-semibold"
           >
             <Phone className="size-5" aria-hidden="true" />
             {copy.phone.label}
@@ -878,8 +906,8 @@ function Magnetic({
 function Footer() {
   const { copy } = useContent();
   return (
-    <footer className="border-t border-white/8">
-      <div className="mx-auto flex max-w-6xl flex-col gap-3 px-5 py-6 text-sm text-[#888] sm:flex-row sm:items-center sm:justify-between">
+    <footer className="border-t line">
+      <div className="mx-auto flex max-w-6xl flex-col gap-3 px-5 py-6 text-sm muted sm:flex-row sm:items-center sm:justify-between">
         <p>© 2026 {copy.name}</p>
         <div className="flex gap-5">
           <a href={copy.telegram.href} {...externalProps(copy.telegram.href)} className="inline-flex min-h-11 items-center">

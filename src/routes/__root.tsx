@@ -2,6 +2,7 @@ import { createRootRoute, HeadContent, Outlet, Scripts } from "@tanstack/react-r
 import { AuthProvider } from "@/lib/auth/provider";
 import { PreviewHostBridge } from "@/components/preview-host-bridge";
 import { content } from "@/config/portfolio";
+import { themeBootScript } from "@/lib/theme";
 import appCss from "../styles.css?url";
 
 const seo = content("uz").seo;
@@ -34,8 +35,9 @@ export const Route = createRootRoute({
     ],
   }),
   component: () => (
-    <html lang="uz" suppressHydrationWarning>
+    <html lang="uz" data-theme="dark" suppressHydrationWarning>
       <head>
+        <script dangerouslySetInnerHTML={{ __html: themeBootScript }} />
         <HeadContent />
       </head>
       <body>

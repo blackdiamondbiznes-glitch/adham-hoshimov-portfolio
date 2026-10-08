@@ -16,6 +16,21 @@
 
 @layer base {
   html {
+    --pf-bg: #000000;
+    --pf-fg: #ffffff;
+    --pf-muted: #888888;
+    --pf-soft: #d4d4d4;
+    --pf-faint: #555555;
+    --pf-line: rgba(255, 255, 255, 0.1);
+    --pf-line-strong: rgba(255, 255, 255, 0.15);
+    --pf-card: rgba(255, 255, 255, 0.04);
+    --pf-card-2: rgba(255, 255, 255, 0.035);
+    --pf-header: rgba(0, 0, 0, 0.55);
+    --pf-menu: rgba(0, 0, 0, 0.82);
+    --pf-chip: rgba(10, 10, 10, 0.72);
+    --pf-stroke: #ffffff;
+    --pf-accent: #4f2bff;
+    --pf-shadow: rgba(0, 0, 0, 0.35);
     scroll-behavior: smooth;
     scroll-padding-top: 6.5rem;
     color-scheme: dark;
@@ -24,13 +39,35 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
+  html[data-theme="light"] {
+    --pf-bg: #f3f0e8;
+    --pf-fg: #1a1814;
+    --pf-muted: #5f594f;
+    --pf-soft: #2c2924;
+    --pf-faint: #8a8376;
+    --pf-line: rgba(26, 24, 20, 0.12);
+    --pf-line-strong: rgba(26, 24, 20, 0.2);
+    --pf-card: #fffdf8;
+    --pf-card-2: #fffdf8;
+    --pf-header: rgba(243, 240, 232, 0.88);
+    --pf-menu: rgba(255, 253, 248, 0.96);
+    --pf-chip: rgba(255, 253, 248, 0.92);
+    --pf-stroke: #1a1814;
+    --pf-accent: #4f2bff;
+    --pf-shadow: rgba(40, 32, 20, 0.08);
+    color-scheme: light;
+  }
+
   body {
     margin: 0;
-    background: #000;
-    color: #fff;
+    background: var(--pf-bg);
+    color: var(--pf-fg);
     font-family: var(--font-sans);
     font-size: 1rem;
     line-height: 1.55;
+    transition:
+      background-color 0.35s ease,
+      color 0.35s ease;
   }
 
   h1,
@@ -63,8 +100,59 @@
 }
 
 @layer components {
+  .fg { color: var(--pf-fg); }
+  .muted { color: var(--pf-muted); }
+  .soft { color: var(--pf-soft); }
+  .faint { color: var(--pf-faint); }
+  .line { border-color: var(--pf-line); }
+  .line-strong { border-color: var(--pf-line-strong); }
+  .accent-icon { color: var(--pf-accent); }
+
+  .page {
+    background: var(--pf-bg);
+    color: var(--pf-fg);
+  }
+
+  .header-shell,
+  .menu-panel {
+    border: 1px solid var(--pf-line);
+    background: var(--pf-header);
+    box-shadow: 0 10px 40px var(--pf-shadow);
+    backdrop-filter: blur(18px);
+    transition:
+      background-color 0.35s ease,
+      border-color 0.35s ease;
+  }
+
+  .menu-panel {
+    background: var(--pf-menu);
+  }
+
+  .theme-split {
+    width: 1px;
+    height: 18px;
+    margin-inline: 4px;
+    background: var(--pf-line-strong);
+  }
+
+  .ghost {
+    border: 1px solid var(--pf-line-strong);
+    color: var(--pf-fg);
+  }
+
+  .tag {
+    border: 1px solid var(--pf-line);
+    color: var(--pf-muted);
+  }
+
+  .icon-well {
+    border: 1px solid var(--pf-line);
+    background: color-mix(in srgb, var(--pf-accent) 14%, transparent);
+    color: var(--pf-accent);
+  }
+
   .kicker {
-    color: #888;
+    color: var(--pf-muted);
     font-size: 12px;
     font-weight: 600;
     letter-spacing: 0.28em;
@@ -85,11 +173,11 @@
     font-weight: 500;
     letter-spacing: -0.06em;
     line-height: 0.84;
-    -webkit-text-stroke: 1.5px #fff;
+    -webkit-text-stroke: 1.5px var(--pf-stroke);
   }
 
   .hero-ink {
-    color: #fff;
+    color: var(--pf-fg);
     font-style: italic;
     font-weight: 700;
     -webkit-text-stroke: 0;
@@ -112,10 +200,14 @@
   }
 
   .glass {
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--pf-line);
     border-radius: 24px;
-    background: rgba(255, 255, 255, 0.035);
+    background: var(--pf-card-2);
     backdrop-filter: blur(18px);
+    transition:
+      background-color 0.35s ease,
+      border-color 0.35s ease,
+      box-shadow 0.35s ease;
   }
 
   .glass:hover {
@@ -129,7 +221,7 @@
     position: relative;
     isolation: isolate;
     overflow: hidden;
-    background: #000;
+    background: var(--pf-bg);
   }
 
   .smoke-canvas,
@@ -167,8 +259,9 @@
     align-items: center;
     border: 1px solid rgba(255, 255, 255, 0.14);
     border-radius: 999px;
-    background: rgba(10, 10, 10, 0.72);
-    color: #fff;
+    background: var(--pf-chip);
+    color: var(--pf-fg);
+    border-color: var(--pf-line-strong);
     padding: 0 14px;
     font-size: 14px;
     font-weight: 600;
@@ -203,12 +296,12 @@
 
   .ticker {
     overflow: hidden;
-    border-block: 1px solid rgba(255, 255, 255, 0.08);
+    border-block: 1px solid var(--pf-line);
   }
 
   .ticker-track {
     animation-duration: 28s;
-    color: #888;
+    color: var(--pf-muted);
     font-size: 13px;
     font-weight: 600;
     letter-spacing: 0.22em;
@@ -271,7 +364,7 @@
   }
 
   .about-title {
-    color: #fff;
+    color: var(--pf-fg);
     font-size: clamp(1.7rem, 3.1vw, 2.6rem);
     font-weight: 700;
     letter-spacing: -0.045em;
@@ -280,9 +373,9 @@
 
   .about-card {
     height: 100%;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--pf-line);
     border-radius: 24px;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.028));
+    background: var(--pf-card);
     padding: 1.5rem;
     backdrop-filter: blur(18px);
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
@@ -295,11 +388,11 @@
   .about-card-accent {
     background:
       radial-gradient(120% 90% at 100% 0%, rgba(79, 43, 255, 0.32), transparent 58%),
-      linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.028));
+      var(--pf-card);
   }
 
   .hero-glass {
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--pf-line);
     border-radius: 24px;
     background: linear-gradient(
       155deg,
@@ -399,4 +492,30 @@
   .about-card:hover {
     transform: none;
   }
+}
+
+html[data-theme="light"] .smoke-canvas,
+html[data-theme="light"] .hero-wash,
+html[data-theme="light"] .cursor-glow {
+  display: none;
+}
+
+html[data-theme="light"] .hero-glass,
+html[data-theme="light"] .about-card-accent {
+  background: var(--pf-card);
+  box-shadow: inset 3px 0 0 var(--pf-accent);
+}
+
+html[data-theme="light"] .glass:hover,
+html[data-theme="light"] .about-card:hover {
+  border-color: rgba(79, 43, 255, 0.45);
+  box-shadow: 0 16px 36px rgba(40, 32, 20, 0.08);
+}
+
+html[data-theme="light"] .project-card::before {
+  background: radial-gradient(
+    420px circle at var(--mx, 50%) var(--my, 0%),
+    rgba(79, 43, 255, 0.1),
+    transparent 42%
+  );
 }
