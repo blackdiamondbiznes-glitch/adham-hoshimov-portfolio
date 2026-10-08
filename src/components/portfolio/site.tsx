@@ -307,11 +307,7 @@ function Hero() {
             HOSH<span className="hero-ink">I</span>MOV
           </span>
         </h1>
-        <p className="mt-4 min-h-12 text-2xl font-semibold tracking-tight md:text-4xl">
-          <span className="sr-only">{copy.rotating.join(", ")}</span>
-          <Scramble phrases={copy.rotating} />
-        </p>
-        <div className="hero-glass mt-5 max-w-xl">
+        <div className="hero-glass mt-6 max-w-xl">
           <p className="text-base leading-relaxed text-[#d4d4d4] md:text-lg">{copy.slogan}</p>
           <div className="mt-6 flex flex-col gap-3 sm:flex-row">
           <button
@@ -402,63 +398,6 @@ function Smoke() {
   }, []);
 
   return <canvas ref={ref} className="smoke-canvas" aria-hidden="true" />;
-}
-
-const LATIN = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-const CYRILLIC = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ";
-
-function scrambleGlyph(char: string) {
-  if (char === " " || char === "'" || char === "’" || char === "-" || char === "–" || char === "—") {
-    return char;
-  }
-  if (/[A-Za-z]/.test(char)) {
-    const glyph = LATIN[Math.floor(Math.random() * LATIN.length)] ?? "A";
-    return char.toLowerCase() === char ? glyph.toLowerCase() : glyph;
-  }
-  if (/[\u0400-\u04FF]/.test(char)) {
-    const glyph = CYRILLIC[Math.floor(Math.random() * CYRILLIC.length)] ?? "А";
-    return char.toLowerCase() === char ? glyph.toLowerCase() : glyph;
-  }
-  return char;
-}
-
-function Scramble({ phrases }: { phrases: readonly string[] }) {
-  const reduce = useReducedMotion();
-  const first = phrases[0] ?? "";
-  const [text, setText] = useState(first);
-
-  useEffect(() => {
-    setText(first);
-    if (reduce || phrases.length < 2) return;
-    let index = 0;
-    let stepTimer = 0;
-    const spin = window.setInterval(() => {
-      index = (index + 1) % phrases.length;
-      const next = phrases[index] ?? "";
-      let step = 0;
-      window.clearInterval(stepTimer);
-      stepTimer = window.setInterval(() => {
-        setText(
-          next
-            .split("")
-            .map((char, place) => (place < step ? (next[place] ?? char) : scrambleGlyph(char)))
-            .join(""),
-        );
-        step += 0.7;
-        if (step > next.length + 2) window.clearInterval(stepTimer);
-      }, 36);
-    }, 2600);
-    return () => {
-      window.clearInterval(spin);
-      window.clearInterval(stepTimer);
-    };
-  }, [phrases, reduce, first]);
-
-  return (
-    <span className="text-[#4F2BFF]" aria-hidden="true">
-      {text}
-    </span>
-  );
 }
 
 function ChipPile() {
