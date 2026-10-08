@@ -107,7 +107,7 @@ const projectFacts = [
 const messages = {
   uz: {
     role: "Full-stack dasturchi",
-    slogan: "Buyurtma, savdo va ichki hisobni bitta tizimda yuritaman.",
+    slogan: "Kichik biznes uchun Telegram bot, Mini App va ERP yasab beraman.",
     rotating: ["Telegram botlar", "ERP tizimlar", "Mini App'lar"],
     profileAlt: "Adham Hoshimov",
     seo: {
@@ -246,7 +246,7 @@ const messages = {
   },
   ru: {
     role: "Full-stack разработчик",
-    slogan: "Веду заказы, продажи и внутренний учёт в одной системе.",
+    slogan: "Делаю Telegram-ботов, Mini App и ERP для малого бизнеса.",
     rotating: ["Telegram-боты", "ERP-системы", "Mini App"],
     profileAlt: "Adham Hoshimov",
     seo: {
