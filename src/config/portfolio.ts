@@ -126,7 +126,8 @@ const messages = {
     telegramLabel: "Telegram'da yozish",
     aboutTitle: "Biznes uchun bot, Mini App va ERP yaratuvchi dasturchi",
     aboutLead:
-      "Najot Ta'lim va Mohirdev o'quv platformalarida zamonaviy full-stack dasturlash yo'nalishini tamomlagach, ko'mir (briket) ishlab chiqarish va yetkazib berish uchun ERP tizimlar va Telegram Mini App'lar qilaman.",
+      "Najot Ta'lim va Mohirdev'da full-stack dasturlashni tamomlaganman. Kichik va o'rta biznes uchun ERP tizimlar, Telegram botlar va Mini App'lar yarataman. Loyihalar bo'limida namuna sifatidagi loyihalarni ko'rishingiz mumkin.",
+    aboutLeadLink: "Loyihalar bo'limida",
     aboutPoints: [
       {
         title: "Ishlab turgan tizimlar",
@@ -272,7 +273,8 @@ const messages = {
     telegramLabel: "Написать в Telegram",
     aboutTitle: "Разработчик ботов, Mini App и ERP для бизнеса",
     aboutLead:
-      "После обучения современному full-stack программированию на учебных платформах Najot Ta'lim и Mohirdev я делаю ERP-системы и Telegram Mini App для производства и доставки угольного брикета.",
+      "Я закончил курсы full-stack разработки в Najot Ta'lim и Mohirdev. Создаю ERP-системы, Telegram-боты и Mini App для малого и среднего бизнеса. Примеры работ — в разделе «Проекты».",
+    aboutLeadLink: "«Проекты»",
     aboutPoints: [
       {
         title: "Работающие системы",
@@ -435,6 +437,7 @@ export function content(locale: Locale) {
     },
     aboutTitle: text.aboutTitle,
     aboutLead: text.aboutLead,
+    aboutLeadLink: text.aboutLeadLink,
     aboutPoints: text.aboutPoints,
     aboutClose: text.aboutClose,
     ageLabel: text.ageLabel,

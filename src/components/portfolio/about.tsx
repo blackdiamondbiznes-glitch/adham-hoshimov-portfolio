@@ -27,7 +27,7 @@ export function About() {
                   {copy.age} {copy.ageLabel}
                 </p>
                 <p className="soft mt-4 text-base leading-relaxed md:text-[17px]">
-                  {copy.aboutLead}
+                  <AboutLead text={copy.aboutLead} linkLabel={copy.aboutLeadLink} />
                 </p>
               </div>
             </div>
@@ -58,6 +58,20 @@ export function About() {
         </div>
       </div>
     </section>
+  );
+}
+
+function AboutLead({ text, linkLabel }: { text: string; linkLabel: string }) {
+  const index = linkLabel ? text.indexOf(linkLabel) : -1;
+  if (index < 0) return text;
+  return (
+    <>
+      {text.slice(0, index)}
+      <a href="#loyihalar" className="about-lead-link">
+        {linkLabel}
+      </a>
+      {text.slice(index + linkLabel.length)}
+    </>
   );
 }
 
