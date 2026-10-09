@@ -624,15 +624,14 @@ function Services() {
                     <Icon className="size-5 accent-icon" aria-hidden="true" />
                     <h3 className="mt-4 text-lg font-semibold tracking-tight">{service.title}</h3>
                     <p className="mt-1 text-base muted">{service.detail}</p>
-                    <p className="mt-3 text-sm soft">
-                      {price ? copy.formatPrice(price) : copy.priceAsk}
-                    </p>
+                    {price ? <p className="mt-3 text-sm soft">{copy.formatPrice(price)}</p> : null}
                   </article>
                 </Fade>
               </li>
             );
           })}
         </ul>
+        <p className="mt-6 max-w-xl text-sm leading-relaxed soft">{copy.priceAsk}</p>
         <Fade className="mt-12">
           <p className="kicker">{copy.processKicker}</p>
           <h2 className="section-title mt-3">{copy.processTitle}</h2>
@@ -687,11 +686,16 @@ function ProjectCard({ project }: { project: ProjectView }) {
     card.style.setProperty("--my", `${event.clientY - box.top}px`);
   }
 
+  const demo = project.status === "demo";
+
   return (
     <article ref={ref} onPointerMove={onMove} className="project-card glass flex h-full flex-col overflow-hidden">
       <ProjectMedia project={project} video={video} playing={playing} />
         <div className="relative z-[3] flex flex-1 flex-col p-5 md:p-6">
-        <h3 className="text-2xl font-semibold tracking-tight">{project.title}</h3>
+        <span className={demo ? "status-badge status-badge-demo" : "status-badge status-badge-live"}>
+          {demo ? copy.demoBadge : copy.liveBadge}
+        </span>
+        <h3 className="mt-3 text-2xl font-semibold tracking-tight">{project.title}</h3>
         <p className="mt-3 text-base leading-relaxed muted">{project.summary}</p>
         <p className="mt-3 text-base leading-relaxed soft">
           {copy.resultLabel}: {project.result}
@@ -757,13 +761,14 @@ function ProjectMedia({
   video: string | null;
   playing: boolean;
 }) {
+  const { copy } = useContent();
   if (playing && video) {
     return (
       <div className="relative aspect-project bg-black">
         <iframe
           className="absolute inset-0 h-full w-full"
           src={youtubeEmbed(video)}
-          title={`${project.title} videosi`}
+          title={`${project.title} — ${copy.videoLabel}`}
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
         />

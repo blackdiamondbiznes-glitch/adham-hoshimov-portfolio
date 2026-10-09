@@ -6,7 +6,9 @@
  * projects[].gallery — demo skrinshotlari. Bo'sh bo'lsa galereya chiqmaydi.
  *   "/projects/mini-1.jpg" yoki Google Drive ulashish havolasi.
  * services[].price — faqat qiymat, masalan "5 mln". Bo'sh yoki "[NARX]" bo'lsa
- *   "Narx loyihaga qarab, Telegramda so'rang" chiqadi. To'ldirilsa "Narx: 5 mln dan".
+ *   kartada narx chiqmaydi; "Narx loyihaga qarab..." xizmatlar ro'yxati ostida bir marta.
+ *   To'ldirilsa kartada "Narx: 5 mln dan".
+ * projects[].status — "demo" yoki "live". Badge matni shu yerdan chiqadi.
  */
 
 export type Locale = "uz" | "ru";
@@ -38,6 +40,7 @@ export type ProjectView = {
   video: string;
   gallery: string[];
   links: PortfolioLink[];
+  status: "demo" | "live";
   closed?: boolean;
 };
 
@@ -59,6 +62,7 @@ const projectFacts = [
     video: "",
     gallery: [] as string[],
     metric: "[RAQAM]",
+    status: "demo" as const,
     links: [{ href: "https://prism-cap-harbor-gem.grok.me" }],
   },
   {
@@ -68,6 +72,7 @@ const projectFacts = [
     video: "",
     gallery: [] as string[],
     metric: "[RAQAM]",
+    status: "live" as const,
     links: [
       { href: "/demo/briket-erp" },
       { href: "https://briket-erp.onrender.com" },
@@ -81,6 +86,7 @@ const projectFacts = [
     video: "",
     gallery: [] as string[],
     metric: "[RAQAM]",
+    status: "live" as const,
     links: [{ href: "https://briket-erp.onrender.com/mijoz" }],
   },
   {
@@ -90,6 +96,7 @@ const projectFacts = [
     video: "",
     gallery: [] as string[],
     metric: "[RAQAM]",
+    status: "live" as const,
     closed: true,
     links: [{ href: "/demo/briket-mini-app" }],
   },
@@ -100,6 +107,7 @@ const projectFacts = [
     video: "",
     gallery: [] as string[],
     metric: "[RAQAM]",
+    status: "live" as const,
     links: [{ href: "/demo/konkurs-bot" }, { href: "https://t.me/konkursga_qoshil_bot" }],
   },
 ];
@@ -118,24 +126,25 @@ const messages = {
     telegramLabel: "Telegram'da yozish",
     aboutTitle: "Biznes uchun bot, Mini App va ERP yaratuvchi dasturchi",
     aboutLead:
-      "Najot Ta'lim va Mohirdev o'quv platformalarida zamonaviy full-stack dasturlash yo'nalishini tamomlagach, e'tiborimni aynan kichik biznes jarayonlarini tartibga solishga qaratdim. Bugungi kunga kelib, ishlab chiqarish va xizmat ko'rsatish tarmoqlari (masalan, ko'mir yetkazib berish va qadoqlash yo'nalishlari) uchun noldan ERP tizimlar va Telegram Mini App'lar ishlab chiqmoqdaman.",
+      "Najot Ta'lim va Mohirdev o'quv platformalarida zamonaviy full-stack dasturlash yo'nalishini tamomlagach, ko'mir (briket) ishlab chiqarish va yetkazib berish uchun ERP tizimlar va Telegram Mini App'lar qilaman.",
     aboutPoints: [
       {
-        title: "Muammoni o'rganish",
-        detail: "Kod yozishdan oldin biznesning ichki \"og'riq nuqtalarini\" tahlil qilaman.",
-      },
-      {
-        title: "Moslashuvchanlik va qulaylik",
+        title: "Ishlab turgan tizimlar",
         detail:
-          "Murakkab jarayonlarni sodda, barcha turdagi xodimlar osongina foydalana oladigan interfeysga aylantiraman.",
+          "Briket ERP, Black Diamond buyurtma sahifasi, Briket Mini App va Telegram konkurs boti real biznesda ishlatilmoqda.",
       },
       {
-        title: "Sifat va Ishonchlilik",
-        detail: "Arxitektura barqarorligi va ma'lumotlar xavfsizligiga alohida e'tibor beraman.",
+        title: "Haqiqiy kanal uchun bot",
+        detail:
+          "Konkurs boti haqiqiy Telegram kanali uchun moslashtirilgan va hozir shu kanalda ishlatilmoqda.",
+      },
+      {
+        title: "Kafe tizimi demosi",
+        detail:
+          "Kafe va restoran tizimi to'liq ishlaydigan demo. Haqiqiy kafe undan foydalanmaydi.",
       },
     ],
-    aboutClose:
-      "G'oyadan to'liq ishga tushirishgacha bo'lgan bosqichni eng so'nggi texnologiyalar va AI vositalari yordamida tezkor yetkazib beraman.",
+    aboutClose: "Ishlab turgan 4 ta tizim real biznesda ishlatilmoqda.",
     ageLabel: "yosh",
     aboutKicker: "Haqimda",
     summaryLabel: "Xulosa",
@@ -165,6 +174,8 @@ const messages = {
         detail: "Dasturchi, dizayner va mutaxassislar uchun zamonaviy shaxsiy portfolio sayt.",
       },
     ],
+    demoBadge: "Demo loyiha",
+    liveBadge: "Ishlab turibdi",
     priceAsk: "Narx loyihaga qarab, Telegramda so'rang",
     formatPrice: (value: string) => `Narx: ${value} dan`,
     processKicker: "Qanday ishlayman",
@@ -198,8 +209,9 @@ const messages = {
         title: "Kafe/restoran tizimi",
         summary:
           "Kafe uchun to'liq tizim. Stoldagi QR orqali menyu va buyurtma, onlayn buyurtma, ofitsiant, oshxona, kassir, admin va egasi uchun alohida panellar, stollar xaritasi va kunni yopish hisoboti. Telefonga ilova sifatida o'rnatiladi (PWA).",
-        result: "buyurtma qabul qilish qog'ozdan tizimga o'tdi, kunni yopish hisoboti avtomatik",
-        linkLabels: ["Jonli tizim"],
+        result:
+          "to'liq ishlaydigan demo: QR buyurtmadan kunni yopish hisobotigacha bo'lgan oqim ko'rsatiladi",
+        linkLabels: ["Demoni ochish"],
       },
       {
         title: "Briket ERP",
@@ -224,7 +236,7 @@ const messages = {
       {
         title: "Telegram konkurs bot",
         summary:
-          "Yopiq Telegram kanal uchun taklif boti. Har bir foydalanuvchiga shaxsiy taklif havolasi beradi, kim nechta odam qo'shganini hisoblaydi. Konkurs va vebinar rejimlari, admin Mini App va CSV eksport bor.",
+          "Yopiq Telegram kanal uchun taklif boti. Har bir foydalanuvchiga shaxsiy taklif havolasi beradi, kim nechta odam qo'shganini hisoblaydi. Konkurs va vebinar rejimlari, admin Mini App va CSV eksport bor. Haqiqiy Telegram kanali uchun moslashtirilgan va hozir ishlatilmoqda.",
         result: "takliflar hisoblanadi, admin reytingni va CSV eksportni ko'radi",
         linkLabels: ["Saytdagi demo", "Botni ochish"],
       },
@@ -260,23 +272,24 @@ const messages = {
     telegramLabel: "Написать в Telegram",
     aboutTitle: "Разработчик ботов, Mini App и ERP для бизнеса",
     aboutLead:
-      "После обучения современному full-stack программированию на учебных платформах Najot Ta'lim и Mohirdev я сосредоточился на процессах малого бизнеса. Сейчас с нуля делаю ERP-системы и Telegram Mini App для производственных и сервисных направлений — например, для доставки и фасовки угля.",
+      "После обучения современному full-stack программированию на учебных платформах Najot Ta'lim и Mohirdev я делаю ERP-системы и Telegram Mini App для производства и доставки угольного брикета.",
     aboutPoints: [
       {
-        title: "Разбор задачи",
-        detail: "Прежде чем писать код, разбираю внутренние «болевые точки» бизнеса.",
+        title: "Работающие системы",
+        detail:
+          "Briket ERP, страница заказа Black Diamond, Briket Mini App и Telegram-бот конкурса используются в реальном бизнесе.",
       },
       {
-        title: "Гибкость и удобство",
-        detail: "Сложные процессы перевожу в простой интерфейс, которым легко пользуются сотрудники.",
+        title: "Бот для реального канала",
+        detail: "Бот конкурса настроен под реальный Telegram-канал и сейчас используется в этом канале.",
       },
       {
-        title: "Качество и надёжность",
-        detail: "Отдельно слежу за устойчивостью архитектуры и безопасностью данных.",
+        title: "Демо системы кафе",
+        detail:
+          "Система для кафе и ресторана — полностью рабочее демо. Настоящее кафе ей не пользуется.",
       },
     ],
-    aboutClose:
-      "Довожу путь от идеи до запуска на современных технологиях и с помощью AI-инструментов.",
+    aboutClose: "Четыре работающие системы используются в реальном бизнесе.",
     ageLabel: "лет",
     aboutKicker: "Обо мне",
     summaryLabel: "Итог",
@@ -306,6 +319,8 @@ const messages = {
         detail: "Современный личный сайт для разработчиков, дизайнеров и специалистов.",
       },
     ],
+    demoBadge: "Демо-проект",
+    liveBadge: "Работает",
     priceAsk: "Цена зависит от проекта — напишите в Telegram",
     formatPrice: (value: string) => `Цена: от ${value}`,
     processKicker: "Как я работаю",
@@ -339,8 +354,8 @@ const messages = {
         title: "Система для кафе и ресторана",
         summary:
           "Полная система для кафе. Меню и заказ по QR на столе, онлайн-заказы, отдельные панели для официанта, кухни, кассира, администратора и владельца, карта столов и отчёт закрытия дня. Ставится на телефон как приложение (PWA).",
-        result: "приём заказов перешёл с бумаги в систему, отчёт закрытия дня формируется сам",
-        linkLabels: ["Живая система"],
+        result: "рабочее демо: показан путь от заказа по QR до отчёта закрытия дня",
+        linkLabels: ["Открыть демо"],
       },
       {
         title: "Briket ERP",
@@ -365,7 +380,7 @@ const messages = {
       {
         title: "Telegram-бот конкурса",
         summary:
-          "Бот приглашений для закрытого Telegram-канала. Даёт каждому личную ссылку и считает, сколько людей он привёл. Есть режимы конкурса и вебинара, админ Mini App и экспорт CSV.",
+          "Бот приглашений для закрытого Telegram-канала. Даёт каждому личную ссылку и считает, сколько людей он привёл. Есть режимы конкурса и вебинара, админ Mini App и экспорт CSV. Настроен под реальный Telegram-канал и используется в работе.",
         result: "приглашения считаются, администратор видит рейтинг и экспорт CSV",
         linkLabels: ["Демо на сайте", "Открыть бота"],
       },
@@ -440,6 +455,8 @@ export function content(locale: Locale) {
     })) satisfies ServiceView[],
     servicesKicker: text.servicesKicker,
     servicesTitle: text.servicesTitle,
+    demoBadge: text.demoBadge,
+    liveBadge: text.liveBadge,
     priceAsk: text.priceAsk,
     formatPrice: text.formatPrice,
     processKicker: text.processKicker,
@@ -457,6 +474,7 @@ export function content(locale: Locale) {
         image: project.image,
         video: project.video,
         gallery: project.gallery,
+        status: project.status,
         closed: "closed" in project ? project.closed : undefined,
         links: project.links.map((link, linkIndex) => ({
           href: link.href,

@@ -1,9 +1,9 @@
 import { motion, useReducedMotion } from "framer-motion";
-import { Search, ShieldCheck, SlidersHorizontal, Sparkles, type LucideIcon } from "lucide-react";
+import { Layers, MonitorPlay, Send, Sparkles, type LucideIcon } from "lucide-react";
 import { driveImageUrl } from "@/lib/media";
 import { useContent } from "@/lib/locale";
 
-const pointIcons: LucideIcon[] = [Search, SlidersHorizontal, ShieldCheck];
+const pointIcons: LucideIcon[] = [Layers, Send, MonitorPlay];
 
 export function About() {
   const reduce = useReducedMotion();

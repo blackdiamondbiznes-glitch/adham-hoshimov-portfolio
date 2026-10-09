@@ -16,6 +16,13 @@
 
 @layer base {
   html {
+    --pf-badge-demo-fg: #f4f4f5;
+    --pf-badge-demo-border: rgba(255, 255, 255, 0.4);
+    --pf-badge-demo-bg: rgba(255, 255, 255, 0.06);
+    --pf-badge-live-fg: #b6f3d2;
+    --pf-badge-live-border: rgba(61, 214, 140, 0.45);
+    --pf-badge-live-bg: rgba(61, 214, 140, 0.12);
+    --pf-badge-live-dot: #3dd68c;
     --pf-bg: #000000;
     --pf-fg: #ffffff;
     --pf-muted: #888888;
@@ -40,6 +47,13 @@
   }
 
   html[data-theme="light"] {
+    --pf-badge-demo-fg: #1a1814;
+    --pf-badge-demo-border: rgba(26, 24, 20, 0.45);
+    --pf-badge-demo-bg: rgba(26, 24, 20, 0.04);
+    --pf-badge-live-fg: #0f6b3c;
+    --pf-badge-live-border: rgba(15, 107, 60, 0.45);
+    --pf-badge-live-bg: rgba(20, 128, 74, 0.12);
+    --pf-badge-live-dot: #14804a;
     --pf-bg: #f3f0e8;
     --pf-fg: #1a1814;
     --pf-muted: #5f594f;
@@ -143,6 +157,44 @@
   .tag {
     border: 1px solid var(--pf-line);
     color: var(--pf-muted);
+  }
+
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    align-self: flex-start;
+    gap: 0.4rem;
+    border-radius: 999px;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  .status-badge-demo {
+    min-height: 2rem;
+    padding: 0.3rem 0.8rem;
+    border: 1px dashed var(--pf-badge-demo-border);
+    background: var(--pf-badge-demo-bg);
+    color: var(--pf-badge-demo-fg);
+    font-size: 0.8125rem;
+    letter-spacing: 0.01em;
+  }
+
+  .status-badge-live {
+    min-height: 1.5rem;
+    padding: 0.12rem 0.55rem 0.12rem 0.45rem;
+    border: 1px solid var(--pf-badge-live-border);
+    background: var(--pf-badge-live-bg);
+    color: var(--pf-badge-live-fg);
+    font-size: 0.75rem;
+  }
+
+  .status-badge-live::before {
+    content: "";
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 999px;
+    background: var(--pf-badge-live-dot);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--pf-badge-live-dot) 18%, transparent);
   }
 
   .icon-well {
